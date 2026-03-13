@@ -2,6 +2,12 @@
 
 Este é um projeto simples construído para consolidar os conceitos de comunicação cliente-servidor e protocolo HTTP.
 
+## Nome dos integrantes do grupo
+- Fernando Sérgio Ribeiro da Silva - 2310254
+- Vinicius Santos Pereira - 2310071
+- Rachel Vieira Ramos Alves - 2310775
+- Clara Luz Lopes Dias da Cruz 2310133
+
 ## Estrutura
 - **/frontend**: Interface em HTML/JS puro que realiza chamadas HTTP via `fetch`.
 - **/backend**: API em Node.js com Express que recebe e valida as credenciais.
