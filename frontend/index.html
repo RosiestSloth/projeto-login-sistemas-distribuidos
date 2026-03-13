@@ -1,111 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tela de Login</title>
-  <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      height: 100vh; 
-      background-color: #f4f4f4; 
-      margin: 0; 
-    }
-    .login-container { 
-      background: white; 
-      padding: 20px 30px; 
-      border-radius: 8px; 
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-      width: 300px; 
-    }
-    .form-group { 
-      margin-bottom: 15px; 
-    }
-    .form-group label { 
-      display: block; 
-      margin-bottom: 5px; 
-    }
-    .form-group input { 
-      width: 100%; 
-      padding: 8px; 
-      border: 1px solid #ccc; 
-      border-radius: 4px; 
-      box-sizing: border-box; 
-    }
-    button { 
-      width: 100%; 
-      padding: 10px; 
-      background-color: #007BFF; 
-      color: white; 
-      border: none; 
-      border-radius: 4px; 
-      cursor: pointer; 
-    }
-    button:hover { 
-      background-color: #0056b3; 
-    }
-    #mensagem { 
-      margin-top: 15px; 
-      padding: 10px; 
-      border-radius: 4px; 
-      display: none; 
-      text-align: center; 
-    }
-    .sucesso { 
-      background-color: #d4edda; 
-      color: #155724; 
-      border: 1px solid #c3e6cb; 
-    }
-    .erro { 
-      background-color: #f8d7da; 
-      color: #721c24; 
-      border: 1px solid #f5c6cb; 
-    }
-  </style>
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="username">Usuário</label>
-        <input type="text" id="username" name="username" required>
+
+  <div class="page-wrapper">
+    <div class="left-panel">
+      <div class="form-card">
+
+        <!-- Avatar -->
+        <div class="avatar-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </div>
+
+        <!-- Título -->
+        <h2 class="heading">Entrar com sua conta</h2>
+
+        <!-- Formulário -->
+        <div class="form-body">
+          <form id="loginForm">
+            <div class="form-fields">
+
+              <div class="field-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" name="username" placeholder="seu usuario" required
+                  autocomplete="username" />
+              </div>
+
+              <div class="field-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required
+                  autocomplete="current-password" />
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn-submit">Entrar</button>
+          </form>
+
+          <div id="mensagem"></div>
+        </div>
+
       </div>
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" name="passowrd" required>
-      </div>
-      <button type="submit">Entrar</button>
-    </form>
-    <div id="mensagem"></div>
+    </div>
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const usernameInput = document.getElementById('username').value;
       const passwordInput = document.getElementById('password').value;
       const divMensagem = document.getElementById('mensagem');
+      const btnSubmit = this.querySelector('button[type="submit"]');
+
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Entrando...';
 
       try {
         const resposta = await fetch('http://localhost:3000/login', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: usernameInput,
-            password: passwordInput
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: usernameInput, password: passwordInput })
         });
 
         const dados = await resposta.json();
 
-        // Limpa classes anteriores
         divMensagem.className = '';
         divMensagem.style.display = 'block';
 
@@ -116,12 +93,16 @@
           divMensagem.textContent = dados.mensagem;
           divMensagem.classList.add('erro');
         }
-      } catch(erro) {
+      } catch (erro) {
         divMensagem.className = 'erro';
         divMensagem.style.display = 'block';
         divMensagem.textContent = 'Erro ao conectar com o servidor.';
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Entrar';
       }
     });
   </script>
 </body>
+
 </html>
